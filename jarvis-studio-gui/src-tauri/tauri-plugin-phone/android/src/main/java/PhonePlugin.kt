@@ -575,16 +575,16 @@ class PhonePlugin(private val activity: Activity) : Plugin(activity) {
     private fun configureTtsVoice() {
         val engine = tts ?: return
         try {
-            engine.language = Locale.UK
+            engine.language = Locale.ITALY
             engine.setSpeechRate(0.92f)
             engine.setPitch(0.86f)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val voices = engine.voices ?: return
-                val en = voices.filter { v ->
+                val italianVoices = voices.filter { v ->
                     val lang = v.locale?.language ?: ""
-                    lang == "en" || lang.startsWith("en")
+                    lang == "it"
                 }
-                val pool = if (en.isNotEmpty()) en else voices.toList()
+                val pool = italianVoices
                 val picked = pool.firstOrNull { v ->
                     val n = v.name.lowercase()
                     (n.contains("male") || n.contains("daniel") || n.contains("david") || n.contains("ryan"))
@@ -593,7 +593,7 @@ class PhonePlugin(private val activity: Activity) : Plugin(activity) {
                     val n = v.name.lowercase()
                     n.contains("network") || n.contains("neural") || n.contains("enhanced")
                 } ?: pool.firstOrNull { v ->
-                    (v.locale?.country ?: "").equals("GB", ignoreCase = true)
+                    (v.locale?.country ?: "").equals("IT", ignoreCase = true)
                 } ?: pool.firstOrNull()
                 if (picked != null) engine.voice = picked
             }
